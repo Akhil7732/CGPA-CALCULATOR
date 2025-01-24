@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head  >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <img src="kits_title.png" alt="Italian Trulli">
+    <title>CGPA CALCULATOR</title>
+    <style>
+        body {
+        
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #calculator {
+            width: 450px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #sub {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+
+        /* Initially hide the submit button */
+        #submitButton {
+            display: none;
+        }
+        #backgrnd{
+           
+    </style>
+</head>
+<body>
+    <div id="backgrnd">
+   <img src="BUILDING.jpeg" alt="backgrnd">
+</div>
+   <div id="calculator">
+    <h2>CGPA CALCULATOR</h2>
+    
+    <label for="subjects">Number of Subjects:</label>
+    <div id="sub">
+        <select type="number" id="subjects">
+            <!-- Options for selecting the number of subjects -->
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+        </select>
+    </div>
+    
+    <button onclick="createSubjectInputs()">Generate Inputs</button>
+    
+    <!-- Container for dynamically generated subject inputs -->
+    <div id="subjectInputs"></div>
+    
+    <!-- Show the submit button after inputs are generated -->
+    <button id="submitButton" onclick="finalfn()">Calculate CGPA</button>
+    
+    <!-- Display the result -->
+    <h3 id="result2"></h3>
+</div>
+
+</body>
+</html>
+
+<script>
+    var subjects;
+    var marks = [];
+    var credits = [];
+    var submitButton = document.getElementById('submitButton');
+
+    function createSubjectInputs() {
+        subjects = parseInt(document.getElementById('subjects').value);
+        var subjectInputs = document.getElementById('subjectInputs');
+        subjectInputs.innerHTML = '';
+
+        for (var i = 1; i <= subjects; i++) {
+            // Create labels for marks
+            var label = document.createElement('label');
+            label.for = 'marks' + i;
+            label.innerHTML = 'Enter marks obtained in subject ' + i + ':';
+            subjectInputs.appendChild(label);
+
+            // Create inputs for marks
+            var marksInput = document.createElement('input');
+            marksInput.type = 'number';
+            marksInput.id = 'marks' + i;
+            marksInput.placeholder = 'Enter marks';
+            marksInput.required = true;
+            subjectInputs.appendChild(marksInput);
+
+            // Create labels for credits
+            var label = document.createElement('label');
+            label.for = 'credits' + i;
+            label.innerHTML = 'Enter number of credits in subject ' + i + ':';
+            subjectInputs.appendChild(label);
+
+            // Create inputs for credits
+            var creditsInput = document.createElement('input');
+            creditsInput.type = 'number';
+            creditsInput.id = 'credits' + i;
+            creditsInput.placeholder = 'Enter credits';
+            creditsInput.required = true;
+            subjectInputs.appendChild(creditsInput);
+        }
+
+        // Show the submit button after inputs are generated
+        submitButton.style.display = 'block';
+    }
+
+    function finalfn() {
+        for (var j = 1; j <= subjects; j++) {
+            marks[j] = parseInt(document.getElementById('marks' + j).value);
+            credits[j] = parseInt(document.getElementById('credits' + j).value);
+        }
+
+        var marks2 = [];
+        for (var j = 1; j <= subjects; j++) {
+            if (marks[j] >= 90) {
+                marks2[j] = 10;
+            } else if (80 <= marks[j] && marks[j] < 90) {
+                marks2[j] = 9;
+            } else if (70 <= marks[j] && marks[j] < 80) {
+                marks2[j] = 8;
+            } else if (60 <= marks[j] && marks[j] < 70) {
+                marks2[j] = 7;
+            } else if (45 <= marks[j] && marks[j] < 60) {
+                marks2[j] = 6;
+            } else if (35 <= marks[j] && marks[j] < 45) {
+                marks2[j] = 4;
+            } else {
+                marks2[j] = 0;
+            }
+        }
+
+        var numerator = 0;
+        var denominator = 0;
+        var sgpa;
+        for (var j = 1; j <= subjects; j++) {
+            numerator += marks2[j] * credits[j];
+            denominator += credits[j];
+        }
+
+        sgpa = (numerator / denominator).toFixed(2);
+        document.getElementById("result2").innerHTML = 'Your CGPA is: ' + sgpa;
+    }
+</script>
